@@ -2,19 +2,50 @@
 
 package model
 
-type NewTodo struct {
-	Text   string `json:"text"`
-	UserID string `json:"userId"`
+type MutationResponse interface {
+	IsMutationResponse()
 }
 
-type Todo struct {
-	ID   string `json:"id"`
-	Text string `json:"text"`
-	Done bool   `json:"done"`
-	User *User  `json:"user"`
+type Address struct {
+	Address1 string `json:"address1"`
+	Address2 string `json:"address2"`
+	City     string `json:"city"`
+	State    string `json:"state"`
+	Zip      string `json:"zip"`
 }
 
-type User struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+type Loan struct {
+	ID         string      `json:"id"`
+	Properties []*Property `json:"properties"`
+	Valuation  string      `json:"valuation"`
+	Principal  string      `json:"principal"`
+	Interest   string      `json:"interest"`
+	CreatedAt  string      `json:"createdAt"`
+	UpdatedAt  string      `json:"updatedAt"`
+}
+
+type LoanRequest struct {
+	Addresses []*Address `json:"addresses"`
+	Valuation string     `json:"valuation"`
+	Principal string     `json:"principal"`
+	Interest  string     `json:"interest"`
+}
+
+type LoanResponse struct {
+	Errors []string `json:"errors"`
+	Loan   *Loan    `json:"loan"`
+}
+
+func (LoanResponse) IsMutationResponse() {}
+
+type Property struct {
+	ID        string  `json:"id"`
+	Address1  string  `json:"address1"`
+	Address2  string  `json:"address2"`
+	City      string  `json:"city"`
+	State     string  `json:"state"`
+	Zip       string  `json:"zip"`
+	Loans     []*Loan `json:"loans"`
+	CreatedAt string  `json:"createdAt"`
+	UpdatedAt string  `json:"updatedAt"`
 }

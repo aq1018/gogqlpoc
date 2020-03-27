@@ -11,11 +11,19 @@ import (
 	"github.com/PeerStreet/aqgqlpoc/graph/model"
 )
 
-func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
+func (r *mutationResolver) AddLoan(ctx context.Context, request model.LoanRequest) (*model.LoanResponse, error) {
 	panic(fmt.Errorf("not implemented"))
 }
 
-func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
+func (r *mutationResolver) RemoveLoan(ctx context.Context, loanID string) (*model.LoanResponse, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+
+func (r *mutationResolver) UpdateLoan(ctx context.Context, loanID string, request model.LoanRequest) (*model.LoanResponse, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+
+func (r *queryResolver) GetLoans(ctx context.Context) ([]*model.Loan, error) {
 	panic(fmt.Errorf("not implemented"))
 }
 
