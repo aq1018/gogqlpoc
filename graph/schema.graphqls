@@ -1,28 +1,62 @@
-# GraphQL schema example
-#
-# https://gqlgen.com/getting-started/
+scalar Date
+scalar Timestamp
+scalar Decimal
 
-type Todo {
+type Loan {
   id: ID!
-  text: String!
-  done: Boolean!
-  user: User!
+  properties: [Property!]!
+  valuation: Decimal!
+  principal: Decimal!
+  interest: Decimal!
+
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
 }
 
-type User {
+type Property {
   id: ID!
-  name: String!
+  address1: String!
+  address2: String!
+  city: String!
+  state: String!
+  zip: String!
+
+  loans: [Loan!]!
+
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
 }
 
 type Query {
-  todos: [Todo!]!
-}
-
-input NewTodo {
-  text: String!
-  userId: String!
+  getLoans: [Loan!]!
 }
 
 type Mutation {
-  createTodo(input: NewTodo!): Todo!
+  addLoan(request: LoanRequest!) : LoanResponse!
+  removeLoan(loanId: ID!) : LoanResponse!
+  updateLoan(loanId: ID!, request: LoanRequest!) : LoanResponse!
+}
+
+interface MutationResponse {
+  errors: [String!]
+}
+
+type LoanResponse implements MutationResponse {
+  errors: [String!]
+  loan: Loan
+}
+
+input LoanRequest {
+  addresses: [Address!]!
+  valuation: Decimal!
+  principal: Decimal!
+  interest: Decimal!
+}
+
+input Address {
+  address1: String!
+  address2: String!
+  city: String!
+  state: String!
+  zip: String!
 }
