@@ -7,7 +7,7 @@ import (
 )
 
 type Loan struct {
-	ID         string          `json:"id" gorm:"primary_key"`
+	ID         int64           `json:"id" gorm:"primary_key;type: serial;"`
 	Properties []Property      `json:"properties" gorm:"many2many:loan_properties"`
 	Valuation  decimal.Decimal `json:"valuation" sql:"type:decimal(16,2)"`
 	Principal  decimal.Decimal `json:"principal" sql:"type:decimal(16,2)"`

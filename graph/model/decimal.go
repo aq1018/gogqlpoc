@@ -17,7 +17,7 @@ func MarshalDecimal(v decimal.Decimal) graphql.Marshaler {
 
 func UnmarshalDecimal(v interface{}) (decimal.Decimal, error) {
 	if str, ok := v.(string); ok {
-		return decimal.NewFromString(str), nil
+		return decimal.NewFromString(str)
 	}
 
 	return decimal.Zero, fmt.Errorf("%T must be a string representing a decimal", v)
