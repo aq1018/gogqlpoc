@@ -2,8 +2,9 @@
 
 ## Tech Stack
 
-* [gqlgen](https://gqlgen.com/) - go generate based graphql server library.
-* [gorm](https://gorm.io/docs/) - The fantastic ORM library for Golang.
+* [gqlgen](https://gqlgen.com/) - go generate based graphql server library
+* [gorm](https://gorm.io/docs/) - The fantastic ORM library for Golang
+* [work](https://github.com/gocraft/work/) - Process background jobs in Go
 
 ## Step for Docker
 
@@ -26,12 +27,14 @@ Now open [http://localhost:8080](http://localhost:8080) in your browser.
 
 * Go 1.14
 * PostgreSQL
+* Redis
 
 ### Config
 
 Server configuration is done via the following Environment Variables:
 
-* `DBURL` Database connection string. Required.
+* `DATABASE_URL` Database connection string. Required.
+* `REDIS_URL` Redis connection string. Required.
 * `PORT` Service Port. Optional, default 8080.
 
 You can find example config in `.envrc.example`. 

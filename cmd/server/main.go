@@ -10,17 +10,11 @@ import (
 	"github.com/aq1018/gogqlpoc/db"
 	"github.com/aq1018/gogqlpoc/graph"
 	"github.com/aq1018/gogqlpoc/graph/generated"
-
-	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
 const defaultPort = "8080"
 
 func main() {
-	if err := db.Init(os.Getenv("DBURL")); err != nil {
-		log.Fatalf("failed to connect database: %s", err)
-	}
-
 	db.AutoMigrate()
 
 	port := os.Getenv("PORT")

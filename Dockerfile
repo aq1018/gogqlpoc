@@ -1,5 +1,7 @@
 FROM golang:1.14-alpine AS builder
 
+ARG type
+
 # Set necessary environmet variables needed for our image
 ENV GO111MODULE=on \
     CGO_ENABLED=0 \
@@ -18,7 +20,7 @@ RUN go mod download
 COPY . .
 
 # Build the application
-RUN go build -o main .
+RUN go build -o main ./cmd/$type/main.go
 
 # Move to /dist directory as the place for resulting binary folder
 WORKDIR /dist
