@@ -38,6 +38,7 @@ type Config struct {
 type ResolverRoot interface {
 	Loan() LoanResolver
 	Mutation() MutationResolver
+	Property() PropertyResolver
 	Query() QueryResolver
 }
 
@@ -90,6 +91,9 @@ type MutationResolver interface {
 	AddLoan(ctx context.Context, request model.LoanRequest) (*model.LoanResponse, error)
 	RemoveLoan(ctx context.Context, loanID string) (*model.LoanResponse, error)
 	UpdateLoan(ctx context.Context, loanID string, request model.LoanRequest) (*model.LoanResponse, error)
+}
+type PropertyResolver interface {
+	Loans(ctx context.Context, obj *model.Property) ([]*model.Loan, error)
 }
 type QueryResolver interface {
 	GetLoans(ctx context.Context) ([]*model.Loan, error)
@@ -1150,13 +1154,13 @@ func (ec *executionContext) _Property_loans(ctx context.Context, field graphql.C
 		Object:   "Property",
 		Field:    field,
 		Args:     nil,
-		IsMethod: false,
+		IsMethod: true,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Loans, nil
+		return ec.resolvers.Property().Loans(rctx, obj)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2648,47 +2652,56 @@ func (ec *executionContext) _Property(ctx context.Context, sel ast.SelectionSet,
 		case "id":
 			out.Values[i] = ec._Property_id(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "address1":
 			out.Values[i] = ec._Property_address1(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "address2":
 			out.Values[i] = ec._Property_address2(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "city":
 			out.Values[i] = ec._Property_city(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "state":
 			out.Values[i] = ec._Property_state(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "zip":
 			out.Values[i] = ec._Property_zip(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "loans":
-			out.Values[i] = ec._Property_loans(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Property_loans(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
 		case "createdAt":
 			out.Values[i] = ec._Property_createdAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "updatedAt":
 			out.Values[i] = ec._Property_updatedAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
