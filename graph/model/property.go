@@ -11,7 +11,16 @@ type Property struct {
 	City      string    `json:"city"`
 	State     string    `json:"state"`
 	Zip       string    `json:"zip"`
-	Loans     []Loan    `json:"loans" gorm:"many2many:loan_properties;"`
+	Loans     []*Loan   `json:"loans" gorm:"many2many:loan_properties;"`
 	CreatedAt time.Time `json:"createdAt"`
 	UpdatedAt time.Time `json:"updatedAt"`
+}
+
+func NewPropertyFromAddress(address *Address) *Property {
+	return &Property{
+		Address1: address.Address1,
+		Address2: address.Address2,
+		City:     address.City,
+		State:    address.State,
+		Zip:      address.Zip}
 }
