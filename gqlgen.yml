@@ -57,3 +57,5 @@ models:
   Decimal:
     model:
       - github.com/PeerStreet/aqgqlpoc/graph/model.Decimal
+  Timestamp:
+    model: github.com/PeerStreet/aqgqlpoc/graph/model.Timestamp
