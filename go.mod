@@ -1,4 +1,4 @@
-module github.com/PeerStreet/aqgqlpoc
+module github.com/aq1018/gogqlpoc
 
 go 1.14
 

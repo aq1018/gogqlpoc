@@ -6,9 +6,9 @@ package graph
 import (
 	"context"
 
-	"github.com/PeerStreet/aqgqlpoc/db"
-	"github.com/PeerStreet/aqgqlpoc/graph/generated"
-	"github.com/PeerStreet/aqgqlpoc/graph/model"
+	"github.com/aq1018/gogqlpoc/db"
+	"github.com/aq1018/gogqlpoc/graph/generated"
+	"github.com/aq1018/gogqlpoc/graph/model"
 	"github.com/jinzhu/gorm"
 )
 

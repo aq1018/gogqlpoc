@@ -7,9 +7,9 @@ import (
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
-	"github.com/PeerStreet/aqgqlpoc/db"
-	"github.com/PeerStreet/aqgqlpoc/graph"
-	"github.com/PeerStreet/aqgqlpoc/graph/generated"
+	"github.com/aq1018/gogqlpoc/db"
+	"github.com/aq1018/gogqlpoc/graph"
+	"github.com/aq1018/gogqlpoc/graph/generated"
 
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )

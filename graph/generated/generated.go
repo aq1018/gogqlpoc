@@ -14,7 +14,7 @@ import (
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
-	"github.com/PeerStreet/aqgqlpoc/graph/model"
+	"github.com/aq1018/gogqlpoc/graph/model"
 	"github.com/shopspring/decimal"
 	gqlparser "github.com/vektah/gqlparser/v2"
 	"github.com/vektah/gqlparser/v2/ast"
@@ -418,7 +418,7 @@ func (ec *executionContext) field_Mutation_addLoan_args(ctx context.Context, raw
 	args := map[string]interface{}{}
 	var arg0 model.LoanRequest
 	if tmp, ok := rawArgs["request"]; ok {
-		arg0, err = ec.unmarshalNLoanRequest2githubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐLoanRequest(ctx, tmp)
+		arg0, err = ec.unmarshalNLoanRequest2githubᚗcomᚋaq1018ᚋgogqlpocᚋgraphᚋmodelᚐLoanRequest(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -454,7 +454,7 @@ func (ec *executionContext) field_Mutation_updateLoan_args(ctx context.Context, 
 	args["loanId"] = arg0
 	var arg1 model.LoanRequest
 	if tmp, ok := rawArgs["request"]; ok {
-		arg1, err = ec.unmarshalNLoanRequest2githubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐLoanRequest(ctx, tmp)
+		arg1, err = ec.unmarshalNLoanRequest2githubᚗcomᚋaq1018ᚋgogqlpocᚋgraphᚋmodelᚐLoanRequest(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -578,7 +578,7 @@ func (ec *executionContext) _Loan_properties(ctx context.Context, field graphql.
 	}
 	res := resTmp.([]*model.Property)
 	fc.Result = res
-	return ec.marshalNProperty2ᚕᚖgithubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐPropertyᚄ(ctx, field.Selections, res)
+	return ec.marshalNProperty2ᚕᚖgithubᚗcomᚋaq1018ᚋgogqlpocᚋgraphᚋmodelᚐPropertyᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Loan_valuation(ctx context.Context, field graphql.CollectedField, obj *model.Loan) (ret graphql.Marshaler) {
@@ -810,7 +810,7 @@ func (ec *executionContext) _LoanResponse_loan(ctx context.Context, field graphq
 	}
 	res := resTmp.(*model.Loan)
 	fc.Result = res
-	return ec.marshalOLoan2ᚖgithubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐLoan(ctx, field.Selections, res)
+	return ec.marshalOLoan2ᚖgithubᚗcomᚋaq1018ᚋgogqlpocᚋgraphᚋmodelᚐLoan(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_addLoan(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -851,7 +851,7 @@ func (ec *executionContext) _Mutation_addLoan(ctx context.Context, field graphql
 	}
 	res := resTmp.(*model.LoanResponse)
 	fc.Result = res
-	return ec.marshalNLoanResponse2ᚖgithubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐLoanResponse(ctx, field.Selections, res)
+	return ec.marshalNLoanResponse2ᚖgithubᚗcomᚋaq1018ᚋgogqlpocᚋgraphᚋmodelᚐLoanResponse(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_removeLoan(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -892,7 +892,7 @@ func (ec *executionContext) _Mutation_removeLoan(ctx context.Context, field grap
 	}
 	res := resTmp.(*model.LoanResponse)
 	fc.Result = res
-	return ec.marshalNLoanResponse2ᚖgithubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐLoanResponse(ctx, field.Selections, res)
+	return ec.marshalNLoanResponse2ᚖgithubᚗcomᚋaq1018ᚋgogqlpocᚋgraphᚋmodelᚐLoanResponse(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_updateLoan(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -933,7 +933,7 @@ func (ec *executionContext) _Mutation_updateLoan(ctx context.Context, field grap
 	}
 	res := resTmp.(*model.LoanResponse)
 	fc.Result = res
-	return ec.marshalNLoanResponse2ᚖgithubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐLoanResponse(ctx, field.Selections, res)
+	return ec.marshalNLoanResponse2ᚖgithubᚗcomᚋaq1018ᚋgogqlpocᚋgraphᚋmodelᚐLoanResponse(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Property_id(ctx context.Context, field graphql.CollectedField, obj *model.Property) (ret graphql.Marshaler) {
@@ -1171,7 +1171,7 @@ func (ec *executionContext) _Property_loans(ctx context.Context, field graphql.C
 	}
 	res := resTmp.([]*model.Loan)
 	fc.Result = res
-	return ec.marshalNLoan2ᚕᚖgithubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐLoanᚄ(ctx, field.Selections, res)
+	return ec.marshalNLoan2ᚕᚖgithubᚗcomᚋaq1018ᚋgogqlpocᚋgraphᚋmodelᚐLoanᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Property_createdAt(ctx context.Context, field graphql.CollectedField, obj *model.Property) (ret graphql.Marshaler) {
@@ -1273,7 +1273,7 @@ func (ec *executionContext) _Query_getLoans(ctx context.Context, field graphql.C
 	}
 	res := resTmp.([]*model.Loan)
 	fc.Result = res
-	return ec.marshalNLoan2ᚕᚖgithubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐLoanᚄ(ctx, field.Selections, res)
+	return ec.marshalNLoan2ᚕᚖgithubᚗcomᚋaq1018ᚋgogqlpocᚋgraphᚋmodelᚐLoanᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2450,7 +2450,7 @@ func (ec *executionContext) unmarshalInputLoanRequest(ctx context.Context, obj i
 		switch k {
 		case "addresses":
 			var err error
-			it.Addresses, err = ec.unmarshalNAddress2ᚕᚖgithubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐAddressᚄ(ctx, v)
+			it.Addresses, err = ec.unmarshalNAddress2ᚕᚖgithubᚗcomᚋaq1018ᚋgogqlpocᚋgraphᚋmodelᚐAddressᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -2991,11 +2991,11 @@ func (ec *executionContext) ___Type(ctx context.Context, sel ast.SelectionSet, o
 
 // region    ***************************** type.gotpl *****************************
 
-func (ec *executionContext) unmarshalNAddress2githubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐAddress(ctx context.Context, v interface{}) (model.Address, error) {
+func (ec *executionContext) unmarshalNAddress2githubᚗcomᚋaq1018ᚋgogqlpocᚋgraphᚋmodelᚐAddress(ctx context.Context, v interface{}) (model.Address, error) {
 	return ec.unmarshalInputAddress(ctx, v)
 }
 
-func (ec *executionContext) unmarshalNAddress2ᚕᚖgithubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐAddressᚄ(ctx context.Context, v interface{}) ([]*model.Address, error) {
+func (ec *executionContext) unmarshalNAddress2ᚕᚖgithubᚗcomᚋaq1018ᚋgogqlpocᚋgraphᚋmodelᚐAddressᚄ(ctx context.Context, v interface{}) ([]*model.Address, error) {
 	var vSlice []interface{}
 	if v != nil {
 		if tmp1, ok := v.([]interface{}); ok {
@@ -3007,7 +3007,7 @@ func (ec *executionContext) unmarshalNAddress2ᚕᚖgithubᚗcomᚋPeerStreetᚋ
 	var err error
 	res := make([]*model.Address, len(vSlice))
 	for i := range vSlice {
-		res[i], err = ec.unmarshalNAddress2ᚖgithubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐAddress(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNAddress2ᚖgithubᚗcomᚋaq1018ᚋgogqlpocᚋgraphᚋmodelᚐAddress(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -3015,11 +3015,11 @@ func (ec *executionContext) unmarshalNAddress2ᚕᚖgithubᚗcomᚋPeerStreetᚋ
 	return res, nil
 }
 
-func (ec *executionContext) unmarshalNAddress2ᚖgithubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐAddress(ctx context.Context, v interface{}) (*model.Address, error) {
+func (ec *executionContext) unmarshalNAddress2ᚖgithubᚗcomᚋaq1018ᚋgogqlpocᚋgraphᚋmodelᚐAddress(ctx context.Context, v interface{}) (*model.Address, error) {
 	if v == nil {
 		return nil, nil
 	}
-	res, err := ec.unmarshalNAddress2githubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐAddress(ctx, v)
+	res, err := ec.unmarshalNAddress2githubᚗcomᚋaq1018ᚋgogqlpocᚋgraphᚋmodelᚐAddress(ctx, v)
 	return &res, err
 }
 
@@ -3065,11 +3065,11 @@ func (ec *executionContext) marshalNID2int64(ctx context.Context, sel ast.Select
 	return res
 }
 
-func (ec *executionContext) marshalNLoan2githubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐLoan(ctx context.Context, sel ast.SelectionSet, v model.Loan) graphql.Marshaler {
+func (ec *executionContext) marshalNLoan2githubᚗcomᚋaq1018ᚋgogqlpocᚋgraphᚋmodelᚐLoan(ctx context.Context, sel ast.SelectionSet, v model.Loan) graphql.Marshaler {
 	return ec._Loan(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNLoan2ᚕᚖgithubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐLoanᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Loan) graphql.Marshaler {
+func (ec *executionContext) marshalNLoan2ᚕᚖgithubᚗcomᚋaq1018ᚋgogqlpocᚋgraphᚋmodelᚐLoanᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Loan) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -3093,7 +3093,7 @@ func (ec *executionContext) marshalNLoan2ᚕᚖgithubᚗcomᚋPeerStreetᚋaqgql
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNLoan2ᚖgithubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐLoan(ctx, sel, v[i])
+			ret[i] = ec.marshalNLoan2ᚖgithubᚗcomᚋaq1018ᚋgogqlpocᚋgraphᚋmodelᚐLoan(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -3106,7 +3106,7 @@ func (ec *executionContext) marshalNLoan2ᚕᚖgithubᚗcomᚋPeerStreetᚋaqgql
 	return ret
 }
 
-func (ec *executionContext) marshalNLoan2ᚖgithubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐLoan(ctx context.Context, sel ast.SelectionSet, v *model.Loan) graphql.Marshaler {
+func (ec *executionContext) marshalNLoan2ᚖgithubᚗcomᚋaq1018ᚋgogqlpocᚋgraphᚋmodelᚐLoan(ctx context.Context, sel ast.SelectionSet, v *model.Loan) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -3116,15 +3116,15 @@ func (ec *executionContext) marshalNLoan2ᚖgithubᚗcomᚋPeerStreetᚋaqgqlpoc
 	return ec._Loan(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNLoanRequest2githubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐLoanRequest(ctx context.Context, v interface{}) (model.LoanRequest, error) {
+func (ec *executionContext) unmarshalNLoanRequest2githubᚗcomᚋaq1018ᚋgogqlpocᚋgraphᚋmodelᚐLoanRequest(ctx context.Context, v interface{}) (model.LoanRequest, error) {
 	return ec.unmarshalInputLoanRequest(ctx, v)
 }
 
-func (ec *executionContext) marshalNLoanResponse2githubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐLoanResponse(ctx context.Context, sel ast.SelectionSet, v model.LoanResponse) graphql.Marshaler {
+func (ec *executionContext) marshalNLoanResponse2githubᚗcomᚋaq1018ᚋgogqlpocᚋgraphᚋmodelᚐLoanResponse(ctx context.Context, sel ast.SelectionSet, v model.LoanResponse) graphql.Marshaler {
 	return ec._LoanResponse(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNLoanResponse2ᚖgithubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐLoanResponse(ctx context.Context, sel ast.SelectionSet, v *model.LoanResponse) graphql.Marshaler {
+func (ec *executionContext) marshalNLoanResponse2ᚖgithubᚗcomᚋaq1018ᚋgogqlpocᚋgraphᚋmodelᚐLoanResponse(ctx context.Context, sel ast.SelectionSet, v *model.LoanResponse) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -3134,11 +3134,11 @@ func (ec *executionContext) marshalNLoanResponse2ᚖgithubᚗcomᚋPeerStreetᚋ
 	return ec._LoanResponse(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNProperty2githubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐProperty(ctx context.Context, sel ast.SelectionSet, v model.Property) graphql.Marshaler {
+func (ec *executionContext) marshalNProperty2githubᚗcomᚋaq1018ᚋgogqlpocᚋgraphᚋmodelᚐProperty(ctx context.Context, sel ast.SelectionSet, v model.Property) graphql.Marshaler {
 	return ec._Property(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNProperty2ᚕᚖgithubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐPropertyᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Property) graphql.Marshaler {
+func (ec *executionContext) marshalNProperty2ᚕᚖgithubᚗcomᚋaq1018ᚋgogqlpocᚋgraphᚋmodelᚐPropertyᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Property) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -3162,7 +3162,7 @@ func (ec *executionContext) marshalNProperty2ᚕᚖgithubᚗcomᚋPeerStreetᚋa
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNProperty2ᚖgithubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐProperty(ctx, sel, v[i])
+			ret[i] = ec.marshalNProperty2ᚖgithubᚗcomᚋaq1018ᚋgogqlpocᚋgraphᚋmodelᚐProperty(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -3175,7 +3175,7 @@ func (ec *executionContext) marshalNProperty2ᚕᚖgithubᚗcomᚋPeerStreetᚋa
 	return ret
 }
 
-func (ec *executionContext) marshalNProperty2ᚖgithubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐProperty(ctx context.Context, sel ast.SelectionSet, v *model.Property) graphql.Marshaler {
+func (ec *executionContext) marshalNProperty2ᚖgithubᚗcomᚋaq1018ᚋgogqlpocᚋgraphᚋmodelᚐProperty(ctx context.Context, sel ast.SelectionSet, v *model.Property) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -3462,11 +3462,11 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	return ec.marshalOBoolean2bool(ctx, sel, *v)
 }
 
-func (ec *executionContext) marshalOLoan2githubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐLoan(ctx context.Context, sel ast.SelectionSet, v model.Loan) graphql.Marshaler {
+func (ec *executionContext) marshalOLoan2githubᚗcomᚋaq1018ᚋgogqlpocᚋgraphᚋmodelᚐLoan(ctx context.Context, sel ast.SelectionSet, v model.Loan) graphql.Marshaler {
 	return ec._Loan(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalOLoan2ᚖgithubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐLoan(ctx context.Context, sel ast.SelectionSet, v *model.Loan) graphql.Marshaler {
+func (ec *executionContext) marshalOLoan2ᚖgithubᚗcomᚋaq1018ᚋgogqlpocᚋgraphᚋmodelᚐLoan(ctx context.Context, sel ast.SelectionSet, v *model.Loan) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}

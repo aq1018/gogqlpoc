@@ -1,7 +1,7 @@
 package db
 
 import (
-	"github.com/PeerStreet/aqgqlpoc/graph/model"
+	"github.com/aq1018/gogqlpoc/graph/model"
 	"github.com/jinzhu/gorm"
 )
 
