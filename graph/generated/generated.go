@@ -38,6 +38,7 @@ type Config struct {
 }
 
 type ResolverRoot interface {
+	Loan() LoanResolver
 	Mutation() MutationResolver
 	Query() QueryResolver
 }
@@ -47,13 +48,13 @@ type DirectiveRoot struct {
 
 type ComplexityRoot struct {
 	Loan struct {
-		CreatedAt  func(childComplexity int) int
-		ID         func(childComplexity int) int
-		Interest   func(childComplexity int) int
-		Principal  func(childComplexity int) int
-		Properties func(childComplexity int) int
-		UpdatedAt  func(childComplexity int) int
-		Valuation  func(childComplexity int) int
+		CreatedAt      func(childComplexity int) int
+		ID             func(childComplexity int) int
+		Interest       func(childComplexity int) int
+		LoadProperties func(childComplexity int) int
+		Principal      func(childComplexity int) int
+		UpdatedAt      func(childComplexity int) int
+		Valuation      func(childComplexity int) int
 	}
 
 	LoanResponse struct {
@@ -84,6 +85,9 @@ type ComplexityRoot struct {
 	}
 }
 
+type LoanResolver interface {
+	LoadProperties(ctx context.Context, obj *model.Loan) ([]*model.Property, error)
+}
 type MutationResolver interface {
 	AddLoan(ctx context.Context, request model.LoanRequest) (*model.LoanResponse, error)
 	RemoveLoan(ctx context.Context, loanID int64) (*model.LoanResponse, error)
@@ -129,19 +133,19 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Loan.Interest(childComplexity), true
 
+	case "Loan.properties":
+		if e.complexity.Loan.LoadProperties == nil {
+			break
+		}
+
+		return e.complexity.Loan.LoadProperties(childComplexity), true
+
 	case "Loan.principal":
 		if e.complexity.Loan.Principal == nil {
 			break
 		}
 
 		return e.complexity.Loan.Principal(childComplexity), true
-
-	case "Loan.properties":
-		if e.complexity.Loan.Properties == nil {
-			break
-		}
-
-		return e.complexity.Loan.Properties(childComplexity), true
 
 	case "Loan.updatedAt":
 		if e.complexity.Loan.UpdatedAt == nil {
@@ -554,13 +558,13 @@ func (ec *executionContext) _Loan_properties(ctx context.Context, field graphql.
 		Object:   "Loan",
 		Field:    field,
 		Args:     nil,
-		IsMethod: false,
+		IsMethod: true,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Properties, nil
+		return ec.resolvers.Loan().LoadProperties(rctx, obj)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -572,9 +576,9 @@ func (ec *executionContext) _Loan_properties(ctx context.Context, field graphql.
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]model.Property)
+	res := resTmp.([]*model.Property)
 	fc.Result = res
-	return ec.marshalNProperty2ᚕgithubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐPropertyᚄ(ctx, field.Selections, res)
+	return ec.marshalNProperty2ᚕᚖgithubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐPropertyᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Loan_valuation(ctx context.Context, field graphql.CollectedField, obj *model.Loan) (ret graphql.Marshaler) {
@@ -1165,9 +1169,9 @@ func (ec *executionContext) _Property_loans(ctx context.Context, field graphql.C
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]model.Loan)
+	res := resTmp.([]*model.Loan)
 	fc.Result = res
-	return ec.marshalNLoan2ᚕgithubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐLoanᚄ(ctx, field.Selections, res)
+	return ec.marshalNLoan2ᚕᚖgithubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐLoanᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Property_createdAt(ctx context.Context, field graphql.CollectedField, obj *model.Property) (ret graphql.Marshaler) {
@@ -2512,37 +2516,46 @@ func (ec *executionContext) _Loan(ctx context.Context, sel ast.SelectionSet, obj
 		case "id":
 			out.Values[i] = ec._Loan_id(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "properties":
-			out.Values[i] = ec._Loan_properties(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Loan_properties(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
 		case "valuation":
 			out.Values[i] = ec._Loan_valuation(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "principal":
 			out.Values[i] = ec._Loan_principal(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "interest":
 			out.Values[i] = ec._Loan_interest(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "createdAt":
 			out.Values[i] = ec._Loan_createdAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "updatedAt":
 			out.Values[i] = ec._Loan_updatedAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
@@ -3056,43 +3069,6 @@ func (ec *executionContext) marshalNLoan2githubᚗcomᚋPeerStreetᚋaqgqlpocᚋ
 	return ec._Loan(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNLoan2ᚕgithubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐLoanᚄ(ctx context.Context, sel ast.SelectionSet, v []model.Loan) graphql.Marshaler {
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalNLoan2githubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐLoan(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-	return ret
-}
-
 func (ec *executionContext) marshalNLoan2ᚕᚖgithubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐLoanᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Loan) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
@@ -3162,7 +3138,7 @@ func (ec *executionContext) marshalNProperty2githubᚗcomᚋPeerStreetᚋaqgqlpo
 	return ec._Property(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNProperty2ᚕgithubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐPropertyᚄ(ctx context.Context, sel ast.SelectionSet, v []model.Property) graphql.Marshaler {
+func (ec *executionContext) marshalNProperty2ᚕᚖgithubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐPropertyᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Property) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -3186,7 +3162,7 @@ func (ec *executionContext) marshalNProperty2ᚕgithubᚗcomᚋPeerStreetᚋaqgq
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNProperty2githubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐProperty(ctx, sel, v[i])
+			ret[i] = ec.marshalNProperty2ᚖgithubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐProperty(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -3197,6 +3173,16 @@ func (ec *executionContext) marshalNProperty2ᚕgithubᚗcomᚋPeerStreetᚋaqgq
 	}
 	wg.Wait()
 	return ret
+}
+
+func (ec *executionContext) marshalNProperty2ᚖgithubᚗcomᚋPeerStreetᚋaqgqlpocᚋgraphᚋmodelᚐProperty(ctx context.Context, sel ast.SelectionSet, v *model.Property) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._Property(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalNString2string(ctx context.Context, v interface{}) (string, error) {
