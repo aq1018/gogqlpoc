@@ -9,11 +9,22 @@ import (
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/PeerStreet/aqgqlpoc/graph"
 	"github.com/PeerStreet/aqgqlpoc/graph/generated"
+	"github.com/PeerStreet/aqgqlpoc/graph/model"
+
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
 const defaultPort = "8080"
 
 func main() {
+	db, err := gorm.Open("postgres", os.Getenv("DBURL"))
+	if err != nil {
+		log.Fatalf("failed to connect database: %s", err)
+	}
+
+	db.AutoMigrate(&model.Loan{}, &model.Property{})
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = defaultPort
