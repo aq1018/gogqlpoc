@@ -36,6 +36,7 @@ type Config struct {
 }
 
 type ResolverRoot interface {
+	Loan() LoanResolver
 	Mutation() MutationResolver
 	Query() QueryResolver
 }
@@ -82,6 +83,9 @@ type ComplexityRoot struct {
 	}
 }
 
+type LoanResolver interface {
+	Properties(ctx context.Context, obj *model.Loan) ([]*model.Property, error)
+}
 type MutationResolver interface {
 	AddLoan(ctx context.Context, request model.LoanRequest) (*model.LoanResponse, error)
 	RemoveLoan(ctx context.Context, loanID string) (*model.LoanResponse, error)
@@ -553,13 +557,13 @@ func (ec *executionContext) _Loan_properties(ctx context.Context, field graphql.
 		Object:   "Loan",
 		Field:    field,
 		Args:     nil,
-		IsMethod: false,
+		IsMethod: true,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Properties, nil
+		return ec.resolvers.Loan().Properties(rctx, obj)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2511,37 +2515,46 @@ func (ec *executionContext) _Loan(ctx context.Context, sel ast.SelectionSet, obj
 		case "id":
 			out.Values[i] = ec._Loan_id(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "properties":
-			out.Values[i] = ec._Loan_properties(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Loan_properties(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
 		case "valuation":
 			out.Values[i] = ec._Loan_valuation(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "principal":
 			out.Values[i] = ec._Loan_principal(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "interest":
 			out.Values[i] = ec._Loan_interest(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "createdAt":
 			out.Values[i] = ec._Loan_createdAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "updatedAt":
 			out.Values[i] = ec._Loan_updatedAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))

@@ -14,16 +14,6 @@ type Address struct {
 	Zip      string `json:"zip"`
 }
 
-type Loan struct {
-	ID         string      `json:"id"`
-	Properties []*Property `json:"properties"`
-	Valuation  string      `json:"valuation"`
-	Principal  string      `json:"principal"`
-	Interest   string      `json:"interest"`
-	CreatedAt  string      `json:"createdAt"`
-	UpdatedAt  string      `json:"updatedAt"`
-}
-
 type LoanRequest struct {
 	Addresses []*Address `json:"addresses"`
 	Valuation string     `json:"valuation"`
