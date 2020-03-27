@@ -2,6 +2,10 @@
 
 package model
 
+import (
+	"github.com/shopspring/decimal"
+)
+
 type MutationResponse interface {
 	IsMutationResponse()
 }
@@ -15,10 +19,10 @@ type Address struct {
 }
 
 type LoanRequest struct {
-	Addresses []*Address `json:"addresses"`
-	Valuation string     `json:"valuation"`
-	Principal string     `json:"principal"`
-	Interest  string     `json:"interest"`
+	Addresses []*Address      `json:"addresses"`
+	Valuation decimal.Decimal `json:"valuation"`
+	Principal decimal.Decimal `json:"principal"`
+	Interest  decimal.Decimal `json:"interest"`
 }
 
 type LoanResponse struct {

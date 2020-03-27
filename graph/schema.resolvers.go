@@ -11,7 +11,11 @@ import (
 	"github.com/PeerStreet/aqgqlpoc/graph/model"
 )
 
-func (r *loanResolver) Properties(ctx context.Context, obj *model.Loan) ([]*model.Property, error) {
+func (r *loanResolver) CreatedAt(ctx context.Context, obj *model.Loan) (string, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+
+func (r *loanResolver) UpdatedAt(ctx context.Context, obj *model.Loan) (string, error) {
 	panic(fmt.Errorf("not implemented"))
 }
 
@@ -27,7 +31,11 @@ func (r *mutationResolver) UpdateLoan(ctx context.Context, loanID string, reques
 	panic(fmt.Errorf("not implemented"))
 }
 
-func (r *propertyResolver) Loans(ctx context.Context, obj *model.Property) ([]*model.Loan, error) {
+func (r *propertyResolver) CreatedAt(ctx context.Context, obj *model.Property) (string, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+
+func (r *propertyResolver) UpdatedAt(ctx context.Context, obj *model.Property) (string, error) {
 	panic(fmt.Errorf("not implemented"))
 }
 
@@ -51,3 +59,25 @@ type loanResolver struct{ *Resolver }
 type mutationResolver struct{ *Resolver }
 type propertyResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
+
+// !!! WARNING !!!
+// The code below was going to be deleted when updating resolvers. It has been copied here so you have
+// one last chance to move it out of harms way if you want. There are two reasons this happens:
+//  - When renaming or deleting a resolver the old code will be put in here. You can safely delete
+//    it when you're done.
+//  - You have helper methods in this file. Move them out to keep these resolver files clean.
+func (r *loanResolver) Valuation(ctx context.Context, obj *model.Loan) (string, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+func (r *loanResolver) Principal(ctx context.Context, obj *model.Loan) (string, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+func (r *loanResolver) Interest(ctx context.Context, obj *model.Loan) (string, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+func (r *loanResolver) Properties(ctx context.Context, obj *model.Loan) ([]*model.Property, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+func (r *propertyResolver) Loans(ctx context.Context, obj *model.Property) ([]*model.Loan, error) {
+	panic(fmt.Errorf("not implemented"))
+}
