@@ -63,8 +63,8 @@ type ComplexityRoot struct {
 
 	Mutation struct {
 		AddLoan    func(childComplexity int, request model.LoanRequest) int
-		RemoveLoan func(childComplexity int, loanID string) int
-		UpdateLoan func(childComplexity int, loanID string, request model.LoanRequest) int
+		RemoveLoan func(childComplexity int, loanID int64) int
+		UpdateLoan func(childComplexity int, loanID int64, request model.LoanRequest) int
 	}
 
 	Property struct {
@@ -86,8 +86,8 @@ type ComplexityRoot struct {
 
 type MutationResolver interface {
 	AddLoan(ctx context.Context, request model.LoanRequest) (*model.LoanResponse, error)
-	RemoveLoan(ctx context.Context, loanID string) (*model.LoanResponse, error)
-	UpdateLoan(ctx context.Context, loanID string, request model.LoanRequest) (*model.LoanResponse, error)
+	RemoveLoan(ctx context.Context, loanID int64) (*model.LoanResponse, error)
+	UpdateLoan(ctx context.Context, loanID int64, request model.LoanRequest) (*model.LoanResponse, error)
 }
 type QueryResolver interface {
 	GetLoans(ctx context.Context) ([]*model.Loan, error)
@@ -193,7 +193,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.RemoveLoan(childComplexity, args["loanId"].(string)), true
+		return e.complexity.Mutation.RemoveLoan(childComplexity, args["loanId"].(int64)), true
 
 	case "Mutation.updateLoan":
 		if e.complexity.Mutation.UpdateLoan == nil {
@@ -205,7 +205,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateLoan(childComplexity, args["loanId"].(string), args["request"].(model.LoanRequest)), true
+		return e.complexity.Mutation.UpdateLoan(childComplexity, args["loanId"].(int64), args["request"].(model.LoanRequest)), true
 
 	case "Property.address1":
 		if e.complexity.Property.Address1 == nil {
@@ -426,9 +426,9 @@ func (ec *executionContext) field_Mutation_addLoan_args(ctx context.Context, raw
 func (ec *executionContext) field_Mutation_removeLoan_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	var arg0 string
+	var arg0 int64
 	if tmp, ok := rawArgs["loanId"]; ok {
-		arg0, err = ec.unmarshalNID2string(ctx, tmp)
+		arg0, err = ec.unmarshalNID2int64(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -440,9 +440,9 @@ func (ec *executionContext) field_Mutation_removeLoan_args(ctx context.Context, 
 func (ec *executionContext) field_Mutation_updateLoan_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	var arg0 string
+	var arg0 int64
 	if tmp, ok := rawArgs["loanId"]; ok {
-		arg0, err = ec.unmarshalNID2string(ctx, tmp)
+		arg0, err = ec.unmarshalNID2int64(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -538,9 +538,9 @@ func (ec *executionContext) _Loan_id(ctx context.Context, field graphql.Collecte
 		}
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(int64)
 	fc.Result = res
-	return ec.marshalNID2string(ctx, field.Selections, res)
+	return ec.marshalNID2int64(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Loan_properties(ctx context.Context, field graphql.CollectedField, obj *model.Loan) (ret graphql.Marshaler) {
@@ -874,7 +874,7 @@ func (ec *executionContext) _Mutation_removeLoan(ctx context.Context, field grap
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().RemoveLoan(rctx, args["loanId"].(string))
+		return ec.resolvers.Mutation().RemoveLoan(rctx, args["loanId"].(int64))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -915,7 +915,7 @@ func (ec *executionContext) _Mutation_updateLoan(ctx context.Context, field grap
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateLoan(rctx, args["loanId"].(string), args["request"].(model.LoanRequest))
+		return ec.resolvers.Mutation().UpdateLoan(rctx, args["loanId"].(int64), args["request"].(model.LoanRequest))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -961,9 +961,9 @@ func (ec *executionContext) _Property_id(ctx context.Context, field graphql.Coll
 		}
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(int64)
 	fc.Result = res
-	return ec.marshalNID2string(ctx, field.Selections, res)
+	return ec.marshalNID2int64(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Property_address1(ctx context.Context, field graphql.CollectedField, obj *model.Property) (ret graphql.Marshaler) {
@@ -3038,12 +3038,12 @@ func (ec *executionContext) marshalNDecimal2githubᚗcomᚋshopspringᚋdecimal�
 	return res
 }
 
-func (ec *executionContext) unmarshalNID2string(ctx context.Context, v interface{}) (string, error) {
-	return graphql.UnmarshalID(v)
+func (ec *executionContext) unmarshalNID2int64(ctx context.Context, v interface{}) (int64, error) {
+	return graphql.UnmarshalInt64(v)
 }
 
-func (ec *executionContext) marshalNID2string(ctx context.Context, sel ast.SelectionSet, v string) graphql.Marshaler {
-	res := graphql.MarshalID(v)
+func (ec *executionContext) marshalNID2int64(ctx context.Context, sel ast.SelectionSet, v int64) graphql.Marshaler {
+	res := graphql.MarshalInt64(v)
 	if res == graphql.Null {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")

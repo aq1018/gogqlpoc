@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/PeerStreet/aqgqlpoc/db"
 	"github.com/PeerStreet/aqgqlpoc/graph/generated"
 	"github.com/PeerStreet/aqgqlpoc/graph/model"
 )
@@ -15,16 +16,20 @@ func (r *mutationResolver) AddLoan(ctx context.Context, request model.LoanReques
 	panic(fmt.Errorf("not implemented"))
 }
 
-func (r *mutationResolver) RemoveLoan(ctx context.Context, loanID string) (*model.LoanResponse, error) {
+func (r *mutationResolver) RemoveLoan(ctx context.Context, loanID int64) (*model.LoanResponse, error) {
 	panic(fmt.Errorf("not implemented"))
 }
 
-func (r *mutationResolver) UpdateLoan(ctx context.Context, loanID string, request model.LoanRequest) (*model.LoanResponse, error) {
+func (r *mutationResolver) UpdateLoan(ctx context.Context, loanID int64, request model.LoanRequest) (*model.LoanResponse, error) {
 	panic(fmt.Errorf("not implemented"))
 }
 
 func (r *queryResolver) GetLoans(ctx context.Context) ([]*model.Loan, error) {
-	panic(fmt.Errorf("not implemented"))
+	loans := []*model.Loan{}
+
+	db.DB.Find(&loans)
+
+	return loans, nil
 }
 
 // Mutation returns generated.MutationResolver implementation.
