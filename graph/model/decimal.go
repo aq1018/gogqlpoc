@@ -3,6 +3,7 @@ package model
 import (
 	"fmt"
 	"io"
+	"strconv"
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/shopspring/decimal"
@@ -10,17 +11,14 @@ import (
 
 func MarshalDecimal(v decimal.Decimal) graphql.Marshaler {
 	return graphql.WriterFunc(func(w io.Writer) {
-		w.Write([]byte(v.String()))
+		io.WriteString(w, strconv.Quote(v.String()))
 	})
 }
 
-func UnmarshalDecimal(v interface{}) (d decimal.Decimal, err error) {
-	switch v := v.(type) {
-	case string:
-		d, err = decimal.NewFromString(v)
-	default:
-		err = fmt.Errorf("%T must be a string representing a decimal", v)
+func UnmarshalDecimal(v interface{}) (decimal.Decimal, error) {
+	if str, ok := v.(string); ok {
+		return decimal.NewFromString(str), nil
 	}
 
-	return d, err
+	return decimal.Zero, fmt.Errorf("%T must be a string representing a decimal", v)
 }
