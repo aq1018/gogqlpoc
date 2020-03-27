@@ -44,13 +44,15 @@ autobind:
 # your liking
 models:
   ID:
-    model:
-      - github.com/99designs/gqlgen/graphql.Int64
+    model: github.com/99designs/gqlgen/graphql.Int64
   Int:
-    model:
-      - github.com/99designs/gqlgen/graphql.Int64
+    model: github.com/99designs/gqlgen/graphql.Int64
   Decimal:
-    model:
-      - github.com/PeerStreet/aqgqlpoc/graph/model.Decimal
+    model: github.com/PeerStreet/aqgqlpoc/graph/model.Decimal
   Timestamp:
     model: github.com/PeerStreet/aqgqlpoc/graph/model.Timestamp
+  Loan:
+    model: github.com/PeerStreet/aqgqlpoc/graph/model.Loan
+    fields:
+      properties:
+        fieldName: LoadProperties
