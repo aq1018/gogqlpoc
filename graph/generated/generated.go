@@ -51,6 +51,7 @@ type ComplexityRoot struct {
 		CreatedAt      func(childComplexity int) int
 		ID             func(childComplexity int) int
 		Interest       func(childComplexity int) int
+		LTV            func(childComplexity int) int
 		LoadProperties func(childComplexity int) int
 		Principal      func(childComplexity int) int
 		UpdatedAt      func(childComplexity int) int
@@ -132,6 +133,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Loan.Interest(childComplexity), true
+
+	case "Loan.ltv":
+		if e.complexity.Loan.LTV == nil {
+			break
+		}
+
+		return e.complexity.Loan.LTV(childComplexity), true
 
 	case "Loan.properties":
 		if e.complexity.Loan.LoadProperties == nil {
@@ -354,6 +362,7 @@ type Loan {
   valuation: Decimal!
   principal: Decimal!
   interest: Decimal!
+  ltv: Decimal!
 
   createdAt: Timestamp!
   updatedAt: Timestamp!
@@ -362,7 +371,7 @@ type Loan {
 type Property {
   id: ID!
   address1: String!
-  address2: String!
+  address2: String
   city: String!
   state: String!
   zip: String!
@@ -401,11 +410,12 @@ input LoanRequest {
 
 input Address {
   address1: String!
-  address2: String!
+  address2: String
   city: String!
   state: String!
   zip: String!
-}`, BuiltIn: false},
+}
+`, BuiltIn: false},
 }
 var parsedSchema = gqlparser.MustLoadSchema(sources...)
 
@@ -667,6 +677,40 @@ func (ec *executionContext) _Loan_interest(ctx context.Context, field graphql.Co
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
 		return obj.Interest, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(decimal.Decimal)
+	fc.Result = res
+	return ec.marshalNDecimal2githubᚗcomᚋshopspringᚋdecimalᚐDecimal(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Loan_ltv(ctx context.Context, field graphql.CollectedField, obj *model.Loan) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Loan",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.LTV(), nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1028,14 +1072,11 @@ func (ec *executionContext) _Property_address2(ctx context.Context, field graphq
 		return graphql.Null
 	}
 	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(*string)
 	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Property_city(ctx context.Context, field graphql.CollectedField, obj *model.Property) (ret graphql.Marshaler) {
@@ -2414,7 +2455,7 @@ func (ec *executionContext) unmarshalInputAddress(ctx context.Context, obj inter
 			}
 		case "address2":
 			var err error
-			it.Address2, err = ec.unmarshalNString2string(ctx, v)
+			it.Address2, err = ec.unmarshalOString2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -2547,6 +2588,11 @@ func (ec *executionContext) _Loan(ctx context.Context, sel ast.SelectionSet, obj
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&invalids, 1)
 			}
+		case "ltv":
+			out.Values[i] = ec._Loan_ltv(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
 		case "createdAt":
 			out.Values[i] = ec._Loan_createdAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -2658,9 +2704,6 @@ func (ec *executionContext) _Property(ctx context.Context, sel ast.SelectionSet,
 			}
 		case "address2":
 			out.Values[i] = ec._Property_address2(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
 		case "city":
 			out.Values[i] = ec._Property_city(ctx, field, obj)
 			if out.Values[i] == graphql.Null {

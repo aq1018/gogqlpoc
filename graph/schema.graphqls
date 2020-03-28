@@ -16,7 +16,7 @@ type Loan {
 type Property {
   id: ID!
   address1: String!
-  address2: String!
+  address2: String
   city: String!
   state: String!
   zip: String!
@@ -55,7 +55,7 @@ input LoanRequest {
 
 input Address {
   address1: String!
-  address2: String!
+  address2: String
   city: String!
   state: String!
   zip: String!

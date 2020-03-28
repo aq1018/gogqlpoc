@@ -31,11 +31,13 @@ RUN cp /build/main .
 # Build a small image
 FROM alpine
 
+RUN apk add --no-cache bash
+
 COPY --from=builder /dist/main /
 
-COPY wait-for /wait-for
+ADD https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh /
 
-RUN chmod +x /wait-for
+RUN chmod +x /wait-for-it.sh
 
 # Command to run
 CMD ["/main"]

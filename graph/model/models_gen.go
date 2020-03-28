@@ -11,11 +11,11 @@ type MutationResponse interface {
 }
 
 type Address struct {
-	Address1 string `json:"address1"`
-	Address2 string `json:"address2"`
-	City     string `json:"city"`
-	State    string `json:"state"`
-	Zip      string `json:"zip"`
+	Address1 string  `json:"address1"`
+	Address2 *string `json:"address2"`
+	City     string  `json:"city"`
+	State    string  `json:"state"`
+	Zip      string  `json:"zip"`
 }
 
 type LoanRequest struct {
