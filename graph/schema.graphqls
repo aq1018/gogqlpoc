@@ -7,6 +7,7 @@ type Loan {
   valuation: Decimal!
   principal: Decimal!
   interest: Decimal!
+  ltv: Decimal!
 
   createdAt: Timestamp!
   updatedAt: Timestamp!

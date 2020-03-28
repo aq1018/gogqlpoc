@@ -9,5 +9,6 @@ require (
 	github.com/jinzhu/gorm v1.9.12
 	github.com/robfig/cron v1.2.0 // indirect
 	github.com/shopspring/decimal v0.0.0-20200227202807-02e2044944cc
+	github.com/thoas/go-funk v0.6.0
 	github.com/vektah/gqlparser/v2 v2.0.1
 )

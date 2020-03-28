@@ -15,3 +15,7 @@ type Loan struct {
 	CreatedAt  time.Time       `json:"createdAt"`
 	UpdatedAt  time.Time       `json:"updatedAt"`
 }
+
+func (loan *Loan) LTV() decimal.Decimal {
+	return loan.Principal.DivRound(loan.Valuation, 2)
+}

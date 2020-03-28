@@ -10,6 +10,11 @@ import (
 func (op *Operation) UpdateLoan(ctx context.Context, loanID int64, request model.LoanRequest) (*model.LoanResponse, error) {
 	response := &model.LoanResponse{}
 
+	response.Errors = request.Validate()
+	if response.Errors != nil {
+		return response, nil
+	}
+
 	err := op.DB.Transaction(func(tx *gorm.DB) error {
 		response.Loan = &model.Loan{}
 		if err := op.DB.First(&response.Loan, loanID).Error; err != nil {
