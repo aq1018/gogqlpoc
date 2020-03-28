@@ -5,7 +5,7 @@ services:
     build:
       context: .
       args:
-        type: server
+        type: worker
     environment:
       - DATABASE_URL=host=db port=5432 user=postgres dbname=gqlpoc sslmode=disable password=password
       - REDIS_URL=redis://redis/0

@@ -14,12 +14,12 @@ func (worker *Worker) registerJobs() {
 func (context *Context) SendEmail(job *work.Job) error {
 	loanID := job.ArgInt64("loanID")
 
-	fmt.Printf("Start sending email", loanID)
+	fmt.Println("Start sending email for LoanID: ", loanID)
 
 	// fake sending email
 	time.Sleep(200 * time.Millisecond)
 
-	fmt.Printf("Email sent!")
+	fmt.Println("Email sent!")
 
 	return nil
 }

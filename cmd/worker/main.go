@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	worker.New().Run()
+	worker.NewWorker().Run()
 }

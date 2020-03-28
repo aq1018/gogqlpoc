@@ -11,11 +11,18 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
-var DB *gorm.DB
-var Redis *redis.Pool
+const REDIS_WORKER_NAMESPACE = "gogqlpoc"
 
-func init() {
-	Redis = &redis.Pool{
+func NewDB() *gorm.DB {
+	db, err := gorm.Open("postgres", os.Getenv("DATABASE_URL"))
+	if err != nil {
+		log.Fatalf("failed to connect database: %s", err)
+	}
+	return db
+}
+
+func NewRedis() *redis.Pool {
+	return &redis.Pool{
 		MaxActive: 5,
 		MaxIdle:   5,
 		Wait:      true,
@@ -23,14 +30,8 @@ func init() {
 			return redis.DialURL(os.Getenv("REDIS_URL"))
 		},
 	}
-
-	var err error
-	DB, err = gorm.Open("postgres", os.Getenv("DATABASE_URL"))
-	if err != nil {
-		log.Fatalf("failed to connect database: %s", err)
-	}
 }
 
-func AutoMigrate() {
-	DB.AutoMigrate(&model.Loan{}, &model.Property{})
+func AutoMigrate(db *gorm.DB) {
+	db.AutoMigrate(&model.Loan{}, &model.Property{})
 }

@@ -6,9 +6,8 @@ import (
 	"os/signal"
 
 	"github.com/aq1018/gogqlpoc/db"
+	"github.com/aq1018/gogqlpoc/operation"
 	"github.com/gocraft/work"
-	"github.com/gomodule/redigo/redis"
-	"github.com/jinzhu/gorm"
 )
 
 type Worker struct {
@@ -16,14 +15,13 @@ type Worker struct {
 }
 
 type Context struct {
-	DB    *gorm.DB
-	Redis *redis.Pool
+	op *operation.Operation
 }
 
-func New() *Worker {
-	context := Context{DB: db.DB, Redis: db.Redis}
-	pool := work.NewWorkerPool(context, 10, "gogqlpoc", db.Redis)
-	return &Worker{pool}
+func NewWorker() *Worker {
+	context := Context{op: operation.NewOperation()}
+	pool := work.NewWorkerPool(context, 10, db.REDIS_WORKER_NAMESPACE, context.op.Redis)
+	return &Worker{pool: pool}
 }
 
 func (worker *Worker) Run() {
